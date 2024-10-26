@@ -1,17 +1,14 @@
 <script lang="ts">
   import { fade } from "svelte/transition";
-  import type { PageData } from "./$types"; 
+  import type { PageData } from "./$types";
   import Chart from "chart.js/auto";
+  import type { ChartType, ChartData } from "chart.js";
 
   export let data: PageData;
 
   let ctx: HTMLCanvasElement | undefined;
   let chart: Chart | undefined;
-
-  let showAge = true;
-  let showWeight = true;
-  let showHeight = true;
-  let chartType: "line" | "bar" = "line";
+  let chartType: ChartType = "bar";  
 
   type LabelData = {
     label: string;
@@ -19,8 +16,8 @@
   };
 
   let label = '';
-  let dataInput = ''; 
-  let labelsData: LabelData[] = []; 
+  let dataInput = '';
+  let labelsData: LabelData[] = [];
 
   function addLabelData() {
     if (isNaN(Number(label)) && !isNaN(Number(dataInput))) {
@@ -37,47 +34,60 @@
       chart.destroy();
     }
 
-    const chartData = labelsData.map(item => Number(item.data));
+    const chartData: ChartData = {
+      labels: labelsData.map(item => item.label),
+      datasets: [
+        {
+          label: "Custom Data",
+          data: labelsData.map(item => Number(item.data)),
+          borderWidth: 2,
+          backgroundColor: ["#FF6384", "#36A2EB", "#FFCE56", "#4BC0C0", "#9966FF", "#FF9F40"]
+        },
+      ],
+    };
 
     chart = new Chart(ctx, {
       type: chartType,
-      data: {
-        labels: labelsData.map(item => item.label),
-        datasets: [
-          
-          {
-            label: "Custom Data",
-            data: chartData,
-            borderWidth: 2,
-            hidden: false,
-            backgroundColor: "rgba(75, 192, 192, 0.5)",
-          },
-        ],
-      },
+      data: chartData,
       options: {
+        responsive: true,
+        maintainAspectRatio: false,
         animation: false,
-        scales: {
-          y: {
-            beginAtZero: true,
-          },
-        },
+        scales: chartType !== "pie" 
+          ? { y: { beginAtZero: true } } 
+          : undefined,
       },
     });
   }
 </script>
-<div class="min-h-screen bg-gray-100 p-6 flex flex-col items-center md:flex-row md:justify-around">
-  <!-- Left Section -->
-  <section class="bg-white shadow-md border border-gray-300 p-6 md:w-1/3 mb-6 md:mb-0">
-    <h2 class="text-2xl font-bold mb-4">Data Palette</h2>
 
-    <!-- Input for Label and Data -->
+<style>
+  .canvas-container {
+    width: 100%;
+    max-width: 700px;
+    height: 400px;
+  }
+
+  canvas {
+    width: 100% !important;
+    height: 100% !important;
+  }
+</style>
+
+<div class="bg-[#F0ECE8]">
+<header>
+  <h2 class="text-2xl font-bold px-12">Data Palette</h2>
+</header>
+<div class="min-h-screen flex flex-col items-center md:flex-row md:justify-around">
+  <!-- Left Section -->
+  <section class="shadow-md border border-black rounded p-6 md:w-1/3 mb-6 md:mb-0">
     <div class="flex flex-col space-y-4">
       <div>
         <input
           type="text"
           placeholder="Label"
           bind:value={label}
-          class="border border-gray-300 rounded w-full p-2 mb-4"
+          class="border border-black rounded w-full p-2 mb-4"
         />
       </div>
 
@@ -86,26 +96,25 @@
           type="number"
           placeholder="Data"
           bind:value={dataInput}
-          class="border border-gray-300 rounded w-full p-2 mb-4"
+          class="border border-black rounded w-full p-2 mb-4"
         />
-        <button on:click={addLabelData} class="bg-purple-300 text-white px-4 py-2 rounded w-full">Add Data</button>
+        <button on:click={addLabelData} class="bg-[#ADE1F0] border border-black  text-black px-4 py-2 rounded w-full">Add Data</button>
       </div>
     </div>
 
-    <!-- Table for Label and Data -->
-    <div class="border border-gray-300 rounded mt-6 p-4">
+    <div class="rounded mt-6 p-4">
       <table class="w-full">
         <thead>
           <tr>
-            <th class="border px-2 py-1">Label</th>
-            <th class="border px-2 py-1">Data</th>
+            <th class="border border-black px-2 py-1">Label</th>
+            <th class="border border-black px-2 py-1">Data</th>
           </tr>
         </thead>
         <tbody>
           {#each labelsData as item}
             <tr>
-              <td class="border px-2 py-1">{item.label}</td>
-              <td class="border px-2 py-1">{item.data}</td>
+              <td class="border border-black px-2 py-1">{item.label}</td>
+              <td class="border border-black px-2 py-1">{item.data}</td>
             </tr>
           {/each}
         </tbody>
@@ -114,31 +123,26 @@
   </section>
 
   <!-- Right Section (Chart) -->
-  <section class="bg-white shadow-md border border-gray-300 p-6 md:w-1/2 flex flex-col items-center">
-    <div class="w-full flex justify-between mb-4">
-      <label for="view-chart" class="text-lg font-semibold">View chart:</label>
-      <select bind:value={chartType} class="border rounded p-2">
+  <section class="shadow-md border border-black rounded p-6 md:w-1/2 flex flex-col items-center">
+    <div class="w-full flex mb-4">
+      <label for="view-chart" class="text-lg font-semibold pr-4">View chart:</label>
+      <select bind:value={chartType} class="border text-xs border-black rounded p-2 bg-[#F0ECE8]">
         <option value="line">Line</option>
         <option value="bar">Bar</option>
-      </select>    </div>
+        <option value="pie">Pie</option>
+      </select>
+    </div>
 
-    <!-- Chart Container -->
     <div class="canvas-container w-full flex justify-center">
-      {#key [showAge, showHeight, showWeight, chartType]}
-        <canvas bind:this={ctx} width="700" height="400" in:fade></canvas>
+      {#key [chartType]}
+        <canvas bind:this={ctx} in:fade></canvas>
       {/key}
     </div>
     {#if ctx}
-      <a href={ctx.toDataURL()} target="_blank" download="graph.png" class="mt-4 bg-blue-500 text-white px-4 py-2 rounded">
-        Download graph as PNG
+      <a href={ctx.toDataURL()} target="_blank" download="graph.png" class="mt-4 text-blue-800 underline">
+        Download
       </a>
     {/if}
   </section>
 </div>
-
-<style>
-  .canvas-container {
-    width: 700px;
-    max-width: 100%;
-  }
-</style>
+</div>
