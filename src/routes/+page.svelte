@@ -44,25 +44,7 @@
       data: {
         labels: labelsData.map(item => item.label),
         datasets: [
-          {
-            label: "User's Age",
-            data: data.users.map(({ age }) => age),
-            borderWidth: 2,
-            hidden: !showAge,
-          },
-          {
-            label: "User's Height",
-            data: data.users.map(({ height }) => height),
-            borderWidth: 2,
-            hidden: !showHeight,
-          },
-          {
-            label: "User's Weight",
-            data: data.users.map(({ weight }) => weight),
-            borderWidth: 2,
-            hidden: !showWeight,
-            indexAxis: "x",
-          },
+          
           {
             label: "Custom Data",
             data: chartData,
@@ -83,7 +65,6 @@
     });
   }
 </script>
-
 <div class="min-h-screen bg-gray-100 p-6 flex flex-col items-center md:flex-row md:justify-around">
   <!-- Left Section -->
   <section class="bg-white shadow-md border border-gray-300 p-6 md:w-1/3 mb-6 md:mb-0">
@@ -136,8 +117,10 @@
   <section class="bg-white shadow-md border border-gray-300 p-6 md:w-1/2 flex flex-col items-center">
     <div class="w-full flex justify-between mb-4">
       <label for="view-chart" class="text-lg font-semibold">View chart:</label>
-      <input type="text" id="view-chart" class="border border-gray-300 rounded p-2 w-1/3" placeholder="Chart Options"/>
-    </div>
+      <select bind:value={chartType} class="border rounded p-2">
+        <option value="line">Line</option>
+        <option value="bar">Bar</option>
+      </select>    </div>
 
     <!-- Chart Container -->
     <div class="canvas-container w-full flex justify-center">
@@ -145,32 +128,6 @@
         <canvas bind:this={ctx} width="700" height="400" in:fade></canvas>
       {/key}
     </div>
-
-    <!-- Chart Controls -->
-    <div class="controls mt-4">
-      <select bind:value={chartType} class="border rounded p-2">
-        <option value="line">Line</option>
-        <option value="bar">Bar</option>
-      </select>
-
-      <div class="flex flex-col mt-2">
-        <label for="age" class="flex items-center">
-          <input type="checkbox" bind:checked={showAge} id="age" />
-          <span class="ml-2">Show Age</span>
-        </label>
-
-        <label for="height" class="flex items-center">
-          <input type="checkbox" bind:checked={showHeight} id="height" />
-          <span class="ml-2">Show Height</span>
-        </label>
-
-        <label for="weight" class="flex items-center">
-          <input type="checkbox" bind:checked={showWeight} id="weight" />
-          <span class="ml-2">Show Weight</span>
-        </label>
-      </div>
-    </div>
-
     {#if ctx}
       <a href={ctx.toDataURL()} target="_blank" download="graph.png" class="mt-4 bg-blue-500 text-white px-4 py-2 rounded">
         Download graph as PNG
