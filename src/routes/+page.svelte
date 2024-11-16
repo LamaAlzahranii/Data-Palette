@@ -20,10 +20,10 @@
   let average = 0;
   let total = 0;
   let editIndex: number | null = null;
-  let errorMessage = '';  // To store error message
+  let errorMessage = '';  
 
   function addOrUpdateLabelData() {
-    errorMessage = '';  // Clear previous error
+    errorMessage = '';  
     if (isNaN(Number(label)) && !isNaN(Number(dataInput))) {
       if (editIndex !== null) {
         labelsData[editIndex] = { label, data: dataInput };
@@ -96,64 +96,6 @@
     });
   }
 </script>
-
-<style>
-  .canvas-container {
-    width: 100%;
-    height: 500px;
-  }
-
-  canvas {
-    width: 100% !important;
-    height: 100% !important;
-  }
-
-  .responsive-container {
-    width: 100%;
-    max-width: 1400px;
-    margin: auto;
-  }
-
-  .error-message {
-    color: red;
-    font-size: 0.875rem;
-    margin-top: 8px;
-  }
-
-  @media (max-width: 768px) {
-    .min-h-screen {
-      min-height: auto;
-    }
-
-    .section-title {
-      font-size: 1.5rem;
-    }
-
-    .input-section,
-    .chart-section {
-      width: 100%;
-      padding: 1rem;
-    }
-
-    .canvas-container {
-      height: 300px;
-    }
-
-    .table-container {
-      overflow-x: auto;
-    }
-  }
-
-  @media (min-width: 768px) {
-    .input-section {
-      width: 25%;
-    }
-
-    .chart-section {
-      width: 70%;
-    }
-  }
-</style>
 
 <div class="bg-[#F0ECE8]">
   <div class="min-h-screen flex flex-col items-center md:flex-row md:justify-around responsive-container">
