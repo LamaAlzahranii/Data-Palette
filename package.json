@@ -28,7 +28,7 @@
 		"@fortawesome/svelte-fontawesome": "^0.2.3",
 		"@sveltejs/adapter-node": "^5.2.9",
 		"@sveltejs/adapter-static": "^3.0.6",
-		"@sveltejs/vite-plugin-svelte": "^2.5.3",
+		"@sveltejs/vite-plugin-svelte": "^4.0.1",
 		"chart.js": "^4.4.1"
 	}
 }
