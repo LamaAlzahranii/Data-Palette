@@ -186,6 +186,11 @@
     "@rollup/plugin-node-resolve" "^16.0.0"
     "rollup" "^4.9.5"
 
+"@sveltejs/adapter-static@^3.0.8":
+  "integrity" "sha512-YaDrquRpZwfcXbnlDsSrBQNCChVOT9MGuSg+dMAyfsAa1SmiAhrA5jUYUiIMC59G92kIbY/AaQOWcBdq+lh+zg=="
+  "resolved" "https://registry.npmjs.org/@sveltejs/adapter-static/-/adapter-static-3.0.8.tgz"
+  "version" "3.0.8"
+
 "@sveltejs/kit@^2.0.0":
   "integrity" "sha512-8t7D3hQHbUDMiaQ2RVnjJJ/+Ur4Fn/tkeySJCsHtX346Q9cp3LAnav8xXdfuqYNJwpUGX0x3BqF1uvbmXQw93A=="
   "resolved" "https://registry.npmjs.org/@sveltejs/kit/-/kit-2.15.1.tgz"
