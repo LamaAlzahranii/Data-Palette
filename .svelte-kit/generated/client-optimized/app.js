@@ -1,19 +1,20 @@
-export { matchers } from './matchers.js';
+export { matchers } from "./matchers.js"
+if (typeof structuredClone === "undefined") {
+  globalThis.structuredClone = require("fast-clone")
+}
 
-export const nodes = [
-	() => import('./nodes/0'),
-	() => import('./nodes/1'),
-	() => import('./nodes/2')
-];
+export const nodes = [() => import("./nodes/0"), () => import("./nodes/1"), () => import("./nodes/2")]
 
-export const server_loads = [];
+export const server_loads = []
 
 export const dictionary = {
-		"/": [2]
-	};
+  "/": [2],
+}
 
 export const hooks = {
-	handleError: (({ error }) => { console.error(error) }),
-};
+  handleError: ({ error }) => {
+    console.error(error)
+  },
+}
 
-export { default as root } from '../root.svelte';
+export { default as root } from "../root.svelte"
